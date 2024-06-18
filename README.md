@@ -155,6 +155,20 @@ pytest
 
 Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
 
+## Convenção de Commits
+
+- **perf**: Melhorias de performance.
+- **style**: Alterações que não afetam a lógica (formatação, ponto e vírgula, etc.).
+- **build**: Mudanças que afetam o sistema de build ou dependências externas.
+- **chore**: Tarefas menores que não mudam a lógica.
+- **ci**: Mudanças nos arquivos de configuração e scripts de CI.
+- **feat**: Adição de novas funcionalidades.
+- **wip**: Trabalho em progresso.
+- **fix**: Correção de bugs.
+- **refactor**: Alterações de código que não corrigem bugs nem adicionam funcionalidades.
+- **test**: Adição ou modificação de testes.
+- **docs**: Adição ou modificação de documentação.
+
 ## License
 
 This project is licensed under the MIT License.
