@@ -1,3 +1,4 @@
+import os
 import pytest
 import httpx
 from httpx import URL, Timeout, Response
@@ -5,26 +6,28 @@ from mksolutions._base_client import BaseClient, SyncAPIClient
 from mksolutions._constants import DEFAULT_TIMEOUT
 from mksolutions.__version__ import __version__
 
-def test_enforce_trailing_slash(base_client):
-    url = URL("http://example.com/api")
-    result = base_client._enforce_trailing_slash(url)
-    assert str(result) == "http://example.com/api/"
+BASE_URL = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
-    url_with_slash = URL("http://example.com/api/")
+def test_enforce_trailing_slash(base_client):
+    url = URL(BASE_URL)
+    result = base_client._enforce_trailing_slash(url)
+    assert str(result) == BASE_URL
+
+    url_with_slash = URL(BASE_URL + "/")
     result_with_slash = base_client._enforce_trailing_slash(url_with_slash)
-    assert str(result_with_slash) == "http://example.com/api/"
+    assert str(result_with_slash) == BASE_URL + "/"
 
 def test_prepare_url(base_client):
     relative_url = "endpoint"
     full_url = base_client._prepare_url(relative_url)
-    assert str(full_url) == "http://example.com/api/endpoint"
+    assert str(full_url) == BASE_URL + "/endpoint"
 
     absolute_url = "http://other.com/endpoint"
     full_absolute_url = base_client._prepare_url(absolute_url)
     assert str(full_absolute_url) == "http://other.com/endpoint"
 
 def test_base_url_property(base_client):
-    assert str(base_client.base_url) == "http://example.com/api/"
+    assert str(base_client.base_url) == BASE_URL
 
     new_base_url = "http://newexample.com/api"
     base_client.base_url = new_base_url
@@ -40,16 +43,16 @@ def test_timeout_property(base_client):
 def test_client_initialization():
     client = BaseClient(
         version="v1",
-        base_url="http://example.com/api/",
+        base_url=BASE_URL,
         timeout=10.0
     )
     assert client._version == "v1"
-    assert str(client.base_url) == "http://example.com/api/"
+    assert str(client.base_url) == BASE_URL
     assert client.timeout == 10.0
 
 def test_sync_client_initialization(sync_client):
     assert sync_client._version == __version__
-    assert str(sync_client.base_url) == "http://example.com/api/"
+    assert str(sync_client.base_url) == BASE_URL
     assert sync_client.timeout == DEFAULT_TIMEOUT
 
 def test_sync_client_get(sync_client, mocker):

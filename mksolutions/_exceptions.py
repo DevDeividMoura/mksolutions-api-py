@@ -42,9 +42,53 @@ class APIStatusError(APIError):
 
     response: httpx.Response
     status_code: int
+    error_code: Optional[str]
 
     def __init__(self, message: str, *, response: httpx.Response, body: object | None) -> None:
         super().__init__(message, response.request, body=body)
         self.response = response
         self.status_code = response.status_code
+        self.error_code = None
 
+class InternalServerError(APIStatusError):
+    pass
+
+class TokenInvalidError(APIError):
+    def __init__(self, message: str, request: httpx.Request, *, body: Optional[object] = None) -> None:
+        super().__init__(message, request, body=body)
+        self.error_code = "001"
+
+class TokenExpiredError(APIError):
+    def __init__(self, message: str, request: httpx.Request, *, body: Optional[object] = None) -> None:
+        super().__init__(message, request, body=body)
+        self.error_code = "999"
+
+
+class TokenNotFoundError(APIError):
+    def __init__(self, message: str, request: httpx.Request, *, body: Optional[object] = None) -> None:
+        super().__init__(message, request, body=body)
+        self.error_code = "999"
+
+
+class InvalidDocumentError(APIError):
+    def __init__(self, message: str, request: httpx.Request, *, body: Optional[object] = None) -> None:
+        super().__init__(message, request, body=body)
+        self.error_code = "002"
+
+
+class DocumentNotFoundError(APIError):
+    def __init__(self, message: str, request: httpx.Request, *, body: Optional[object] = None) -> None:
+        super().__init__(message, request, body=body)
+        self.error_code = "003"
+
+class MissingBaseUrlError(MKSError):
+    pass
+
+class InvalidAuthTypeError(MKSError):
+    pass
+
+class MissingGeneralAuthParametersError(MKSError):
+    pass
+
+class MissingSpecificAuthParametersError(MKSError):
+    pass

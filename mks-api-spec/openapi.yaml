@@ -1,0 +1,114 @@
+openapi: 3.0.0
+info:
+  title: MK Solutions API
+  description: API de autenticação da MK Solutions
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:4010
+paths:
+  /WSAutenticacaoOperador.rule:
+    get:
+      summary: Autenticação Específica
+      parameters:
+        - name: sys
+          in: query
+          required: true
+          schema:
+            type: string
+            example: MK0
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSpecificResponse'
+        '400':
+          description: Requisição inválida
+  /WSAutenticacao.rule:
+    get:
+      summary: Autenticação Geral
+      parameters:
+        - name: sys
+          in: query
+          required: true
+          schema:
+            type: string
+            example: MK0
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: cd_servico
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthGeneralResponse'
+        '400':
+          description: Requisição inválida
+components:
+  schemas:
+    AuthSpecificResponse:
+      type: object
+      properties:
+        Adm:
+          type: string
+          example: Sim
+        Email:
+          type: string
+          example: teste@dmsolucoesemti.com.br
+        Fone:
+          type: string
+          example: "999999999"
+        Operador:
+          type: string
+          example: DM Suporte
+        TokenAutenticacao:
+          type: string
+          example: test_token_specific_autenticacao
+        status:
+          type: string
+          example: OK
+    AuthGeneralResponse:
+      type: object
+      properties:
+        Expire:
+          type: string
+          example: 30/10/2020 17:50:56
+        LimiteUso:
+          type: integer
+          example: 0
+        ServicosAutorizados:
+          type: array
+          items:
+            type: integer
+          example: [1]
+        Token:
+          type: string
+          example: test_token_general_autenticacao
+        status:
+          type: string
+          example: OK

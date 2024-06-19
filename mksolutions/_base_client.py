@@ -130,9 +130,9 @@ class BaseClient(Generic[_HttpxClientT]):
         :param options: The request options.
         :return: An HTTP request.
         """
-        if log.isEnabledFor(logging.DEBUG):
-            log.debug("Request options: %s",
-                      options.model_dump(exclude_unset=True))
+        # if log.isEnabledFor(logging.DEBUG):
+        log.debug("Request options: %s",
+                    options.model_dump(exclude_unset=True))
 
         return self._client.build_request(
             method=options.method,
@@ -152,14 +152,14 @@ class BaseClient(Generic[_HttpxClientT]):
         return self._base_url
 
     @base_url.setter
-    def base_url(self, url: URL | str) -> None:
+    def base_url(self, url: URL | str | None) -> None:
         """
         Sets the base URL of the client, ensuring it ends with a trailing slash.
 
         :param url: The new base URL, as a string or `httpx.URL` object.
         """
         self._base_url = self._enforce_trailing_slash(
-            url if isinstance(url, URL) else URL(url))
+            url if isinstance(url, URL) else URL(url)) if url else None
 
 
 class SyncHttpxClientWrapper(httpx.Client):
@@ -320,5 +320,7 @@ class SyncAPIClient(BaseClient[httpx.Client]):
         :param headers: (optional) The headers to send with the request.
         :return: The response object of the GET request.
         """
-        opts = FinalRequestOptions(method="GET", url=path, **options)
+        log.debug("GET options: %s",
+                    options)
+        opts = FinalRequestOptions(method="GET", url=path, params=options)
         return self.request(opts)
