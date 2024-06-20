@@ -1,5 +1,5 @@
 from typing import Union, Optional
-from typing_extensions import final, ClassVar
+from typing_extensions import final, ClassVar, Literal
 
 import pydantic
 from pydantic import ConfigDict
@@ -11,12 +11,13 @@ from ._types import (
     Timeout,
 )
 
+class BaseModel(pydantic.BaseModel):
+    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
+
 @final
-class FinalRequestOptions(pydantic.BaseModel):
+class FinalRequestOptions(BaseModel):
     method: str
     url: str
     params: Optional[Query] = {}
     headers: Optional[Headers] = None
     timeout: Union[float, Timeout, None] = None
-
-    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)

@@ -3,7 +3,7 @@ import pytest
 import httpx
 from unittest.mock import MagicMock
 from mksolutions._base_client import BaseClient, SyncAPIClient
-from mksolutions._client import OpenAI
+from mksolutions._client import MKSolutions
 from mksolutions._constants import DEFAULT_TIMEOUT
 from mksolutions.__version__ import __version__
 
@@ -46,10 +46,10 @@ def mock_client():
     client.auth_type = "general"
     return client
 
-# for the OpenAI client test
+# for the MKSolutions client test
 @pytest.fixture
 def client():
-    return OpenAI(
+    return MKSolutions(
         base_url=BASE_URL,
         api_key="test_api_key"
     )

@@ -1,14 +1,14 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
-  title: MK Solutions API
-  description: API de autenticação da MK Solutions
+  title: MK Solutions ERP API
+  description: MK Solutions ERP API
   version: 1.0.0
 servers:
   - url: http://127.0.0.1:4010
 paths:
-  /WSAutenticacaoOperador.rule:
+  /mk/WSAutenticacaoOperador.rule:
     get:
-      summary: Autenticação Específica
+      summary: Specific Authentication
       parameters:
         - name: sys
           in: query
@@ -28,16 +28,16 @@ paths:
             type: string
       responses:
         '200':
-          description: Sucesso
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthSpecificResponse'
         '400':
-          description: Requisição inválida
-  /WSAutenticacao.rule:
+          description: Invalid request
+  /mk/WSAutenticacao.rule:
     get:
-      summary: Autenticação Geral
+      summary: General Authentication
       parameters:
         - name: sys
           in: query
@@ -62,13 +62,104 @@ paths:
             type: integer
       responses:
         '200':
-          description: Sucesso
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthGeneralResponse'
         '400':
-          description: Requisição inválida
+          description: Invalid request
+  /mk/WSMKConsultaDoc.rule:
+    get:
+      summary: Document Consultation
+      parameters:
+        - name: sys
+          in: query
+          required: true
+          schema:
+            type: string
+            example: MK0
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: doc
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/DocumentConsultationResponse'
+                  - $ref: '#/components/schemas/ProcessedWithErrorResponse'
+              examples:
+                success:
+                  value:
+                    CEP: "12345678"
+                    CodigoPessoa: 12345
+                    Email: "cliente1@example.com"
+                    Endereco: "EXAMPLE STREET, 123 - Example Neighborhood, Example City"
+                    Fone: "11999999999"
+                    Latitude: "-23.550520"
+                    Longitude: "-46.633308"
+                    Nome: "JOÃO SILVA"
+                    Outros: 
+                      - CEP: "87654321"
+                        CodigoPessoa: 54321
+                        Email: "cliente2@example.com"
+                        Endereco: "EXAMPLE AVENUE, 456 - Example Neighborhood, Example City"
+                        Fone: "11888888888"
+                        Latitude: "-23.561520"
+                        Longitude: "-46.643308"
+                        Nome: "JOÃO SILVA 2"
+                        Situacao: "Active"
+                      - CEP: "89354321"
+                        CodigoPessoa: 67890
+                        Email: "cliente3@example.com"
+                        Endereco: "EXAMPLE LANE, 789 - Example Neighborhood, Example City"
+                        Fone: "47999999999"
+                        Latitude: "-23.562356"
+                        Longitude: "-46.642356"
+                        Nome: "JOÃO SILVA 3"
+                        Situacao: "Active"
+                    Situacao: "Active"
+                    status: "OK"
+                token_not_found:
+                  value:
+                    CodToken: 0
+                    Mensagem: "Token not found."
+                    "Num. ERRO": "999"
+                    status: "ERRO"
+                expired_token:
+                  value:
+                    CodToken: 585185
+                    Mensagem: "Token expirado."
+                    "Num. ERRO": "999"
+                    status: "ERRO"
+                invalid_token:
+                  value:
+                    Mensagem: "Token inválido."
+                    "Num. ERRO": "001"
+                    status: "ERRO"
+                invalid_document:
+                  value:
+                    Mensagem: "Documento inválido."
+                    "Num. ERRO": "002"
+                    status: "ERRO"
+                document_not_found:
+                  value:
+                    Mensagem: "Documento não localizado."
+                    "Num. ERRO": "003"
+                    status: "ERRO"
+                
+        '400':
+          description: Invalid request
 components:
   schemas:
     AuthSpecificResponse:
@@ -76,7 +167,7 @@ components:
       properties:
         Adm:
           type: string
-          example: Sim
+          example: Yes
         Email:
           type: string
           example: teste@dmsolucoesemti.com.br
@@ -85,10 +176,10 @@ components:
           example: "999999999"
         Operador:
           type: string
-          example: DM Suporte
+          example: DM Support
         TokenAutenticacao:
           type: string
-          example: test_token_specific_autenticacao
+          example: test_token_specific_authentication
         status:
           type: string
           example: OK
@@ -98,17 +189,105 @@ components:
         Expire:
           type: string
           example: 30/10/2020 17:50:56
-        LimiteUso:
+        UsageLimit:
           type: integer
           example: 0
-        ServicosAutorizados:
+        AuthorizedServices:
           type: array
           items:
             type: integer
           example: [1]
         Token:
           type: string
-          example: test_token_general_autenticacao
+          example: test_token_general_authentication
         status:
           type: string
           example: OK
+    Client:
+      type: object
+      properties:
+        CEP:
+          type: string
+          example: "12345678"
+        PersonCode:
+          type: integer
+          example: 12345
+        Email:
+          type: string
+          example: "cliente@example.com"
+        Address:
+          type: string
+          example: "EXAMPLE STREET, 123 - Example Neighborhood, Example City"
+        Phone:
+          type: string
+          example: "11999999999"
+        Latitude:
+          type: string
+          example: "-23.550520"
+        Longitude:
+          type: string
+          example: "-46.633308"
+        Name:
+          type: string
+          example: "JOÃO SILVA"
+        Status:
+          type: string
+          example: "Active"
+    DocumentConsultationResponse:
+      type: object
+      properties:
+        CEP:
+          type: string
+          example: "12345678"
+        PersonCode:
+          type: integer
+          example: 12345
+        Email:
+          type: string
+          example: "cliente@example.com"
+        Address:
+          type: string
+          example: "EXAMPLE STREET, 123 - Example Neighborhood, Example City"
+        Phone:
+          type: string
+          example: "11999999999"
+        Latitude:
+          type: string
+          example: "-23.550520"
+        Longitude:
+          type: string
+          example: "-46.633308"
+        Name:
+          type: string
+          example: "JOÃO SILVA"
+        Others:
+          type: array
+          items:
+            $ref: '#/components/schemas/Client'
+        Status:
+          type: string
+          example: "Active"
+        status:
+          type: string
+          example: "OK"
+    ProcessedWithErrorResponse:
+      type: object
+      properties:
+        CodToken:
+          type: integer
+          example: 0
+        Message:
+          type: string
+          example: "Token not found."
+        "Num. ERRO":
+          type: string
+          example: "999"
+        status:
+          type: string
+          example: "ERRO"
+      required:
+        - Message
+        - ErrorCode
+        - status
+
+         

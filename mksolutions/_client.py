@@ -12,7 +12,7 @@ from ._base_client import SyncAPIClient
 
 
 
-class OpenAI(SyncAPIClient):
+class MKSolutions(SyncAPIClient):
     clients: resources.Clients
     contracts: resources.Contracts
     connections: resources.Connections
@@ -42,6 +42,7 @@ class OpenAI(SyncAPIClient):
         ws_password: Optional[str] = None,
         service_id: Optional[int] = 9999,
         auth_type: Optional[str] = "general",
+        custom_headers: Optional[dict[str, str]] = None,
         # Configure a custom httpx client.
         # We provide a `DefaultHttpxClient` class that you can pass to retain the default values we use for `limits`, `timeout` & `follow_redirects`.
         # See the [httpx documentation](https://www.python-httpx.org/api/#client) for more details.
@@ -89,6 +90,7 @@ class OpenAI(SyncAPIClient):
             base_url=self.base_url,
             timeout=timeout,
             http_client=http_client,
+            custom_headers=custom_headers,
         )
 
         self.auths = resources.Auths(self)

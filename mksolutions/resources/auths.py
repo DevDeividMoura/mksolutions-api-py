@@ -1,18 +1,18 @@
-class Auths:
-    def __init__(self, client) -> None:
-        self.client = client
+from .._resource import SyncAPIResource
+
+class Auths(SyncAPIResource):
         
     def authenticate_general(self) -> None:
         """
         Authenticate the client using the provided general service credentials.
         """
-        response = self.client.get(
+        response = self._get(
             "/WSAutenticacao.rule",
             options={
                 "sys": "MK0",
-                "token": self.client.token,
-                "password": self.client.ws_password,
-                "cd_servico": self.client.service_id,
+                "token": self._client.token,
+                "password": self._client.ws_password,
+                "cd_servico": self._client.service_id,
             },
         )
         return response.json()["Token"]
@@ -22,12 +22,12 @@ class Auths:
         """
         Authenticate the client using the provided specific service credentials.
         """
-        response = self.client.get(
+        response = self._get(
             "/WSAutenticacaoOperador.rule",
             options={
                 "sys": "MK0",
-                "username": self.client.username,
-                "password": self.client.password,
+                "username": self._client.username,
+                "password": self._client.password,
             },
         )
         return response.json()["TokenAutenticacao"]

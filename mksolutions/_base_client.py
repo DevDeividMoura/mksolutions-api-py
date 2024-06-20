@@ -44,7 +44,8 @@ class BaseClient(Generic[_HttpxClientT]):
         *,
         version: str,
         base_url: Union[str, URL],
-        timeout: float | Timeout | None = DEFAULT_TIMEOUT
+        timeout: float | Timeout | None = DEFAULT_TIMEOUT,
+        custom_headers: Optional[Dict[str, str]] = None,
     ) -> None:
         """
         Initializes the BaseClient with version, base_url, and timeout.
@@ -56,6 +57,7 @@ class BaseClient(Generic[_HttpxClientT]):
         self._version = version
         self._base_url = self._enforce_trailing_slash(URL(base_url))
         self.timeout = timeout
+        self._custom_headers = custom_headers or {}
 
     @staticmethod
     def _enforce_trailing_slash(url: URL) -> URL:
@@ -119,6 +121,14 @@ class BaseClient(Generic[_HttpxClientT]):
             return self.base_url.copy_with(raw_path=merge_raw_path)
 
         return merge_url
+    
+    def _build_headers(self) -> httpx.Headers:
+        """
+        Builds the headers for the HTTP request.
+
+        :return: The headers.
+        """
+        return httpx.Headers(self._custom_headers)
 
     def _build_request(
         self,
@@ -133,12 +143,14 @@ class BaseClient(Generic[_HttpxClientT]):
         # if log.isEnabledFor(logging.DEBUG):
         log.debug("Request options: %s",
                     options.model_dump(exclude_unset=True))
+        
+        headers = self._build_headers()
 
         return self._client.build_request(
             method=options.method,
             url=self._prepare_url(options.url),
             params=options.params,
-            headers=options.headers,
+            headers=headers,
             timeout=self.timeout if options.timeout is None else options.timeout,
         )
 
@@ -160,7 +172,7 @@ class BaseClient(Generic[_HttpxClientT]):
         """
         self._base_url = self._enforce_trailing_slash(
             url if isinstance(url, URL) else URL(url)) if url else None
-
+        
 
 class SyncHttpxClientWrapper(httpx.Client):
     def __del__(self) -> None:
@@ -183,6 +195,7 @@ class SyncAPIClient(BaseClient[httpx.Client]):
         base_url: Union[str, URL],
         timeout: float | Timeout | None = DEFAULT_TIMEOUT,
         http_client: httpx.Client | None = None,
+        custom_headers: Optional[Dict[str, str]] = None,
     ) -> None:
         """
         Initializes the SyncAPIClient with version, base_url, and timeout.
@@ -200,7 +213,8 @@ class SyncAPIClient(BaseClient[httpx.Client]):
         super().__init__(
             version=version,
             base_url=base_url,
-            timeout=timeout
+            timeout=timeout,
+            custom_headers=custom_headers,
         )
         self._client = http_client or SyncHttpxClientWrapper(
             base_url=base_url,
@@ -266,7 +280,7 @@ class SyncAPIClient(BaseClient[httpx.Client]):
         :return: The HTTP response.
         """
         request = self._build_request(options)
-        log.debug("Sending HTTP Request: %s %s", request.method, request.url)
+        log.debug("Sending HTTP Request: %s %s %s", request.method, request.headers, request.url)
         try:
             response = self._client.send(request)
         except httpx.TimeoutException as err:
@@ -301,6 +315,7 @@ class SyncAPIClient(BaseClient[httpx.Client]):
 
         if response.status_code == 200:
             body = response.json()
+            print(body)
             if body.get("status") == "ERRO":
                 raise self._make_status_error_from_response(response)
 
@@ -324,3 +339,4 @@ class SyncAPIClient(BaseClient[httpx.Client]):
                     options)
         opts = FinalRequestOptions(method="GET", url=path, params=options)
         return self.request(opts)
+
