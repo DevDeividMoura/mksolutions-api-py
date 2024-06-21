@@ -147,7 +147,7 @@ class MKSolutions(SyncAPIClient):
             error_map = {
                 "001": TokenInvalidError,
                 "002": InvalidDocumentError,
-                "003": DocumentNotFoundError,
+                "003": ResultNotFoundError,
                 "999": TokenExpiredError if "expirado" in message else TokenNotFoundError
             }
 

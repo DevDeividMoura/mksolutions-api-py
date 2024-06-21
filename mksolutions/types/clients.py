@@ -1,7 +1,10 @@
+from typing import Optional
+
 from .._models import BaseModel
 from .._utils import _format_address
+from .connections import Connection
 
-class ClientByDoc(BaseModel):
+class ClientByDocResponse(BaseModel):
     """
     A client returned from the MKSolutions API.
     """
@@ -10,22 +13,22 @@ class ClientByDoc(BaseModel):
     email: str
     phone: str
     address: str
-    cep: str
+    postal: str
     latitude: str
     longitude: str
     status: str
+    connections: Optional[list[Connection]] = None
 
     @classmethod
-    def from_dict(cls, data: dict) -> "ClientByDoc":
+    def from_dict(cls, data: dict) -> "ClientByDocResponse":
         return cls(
             id=data["CodigoPessoa"],
             name=data["Nome"],
             email=data["Email"],
             phone=data["Fone"],
             address= _format_address(data["Endereco"]),
-            cep=data["CEP"],
+            postal=data["CEP"],
             latitude=data["Latitude"],
             longitude=data["Longitude"],
             status=data["Situacao"],
         )
-

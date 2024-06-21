@@ -160,6 +160,66 @@ paths:
                 
         '400':
           description: Invalid request
+  /mk/WSMKConexoesPorCliente.rule:
+    get:
+      summary: Get connections by customer
+      parameters:
+        - name: sys
+          in: query
+          required: true
+          schema:
+            type: string
+          example: MK0
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: cd_cliente
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Client connection list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectionsByClientResponse'
+              examples:
+                success:
+                  value:
+                    CodigoPessoa: 12345
+                    Conexoes:
+                      - bloqueada: "Não"
+                        cadastro: "2023-05-25"
+                        cep: "12345000"
+                        codconexao: 54321
+                        contrato: 67890
+                        endereco: "1234 Elm Street, Apt 567 - Springfield"
+                        esta_reduzida: "Não"
+                        latitude: ""
+                        longitude: ""
+                        mac_address: "00:1A:2B:3C:4D:5E"
+                        motivo_bloqueio: null
+                        username: "johndoe123"
+                      - bloqueada: "Não"
+                        cadastro: "2022-11-15"
+                        cep: "67890000"
+                        codconexao: 98765
+                        contrato: 43210
+                        endereco: "4321 Oak Street, Apt 321 - Shelbyville"
+                        esta_reduzida: "Sim"
+                        latitude: ""
+                        longitude: ""
+                        mac_address: "11:22:33:44:55:66"
+                        motivo_bloqueio: null
+                        username: "janedoe456"
+                    Nome: "John Doe"
+                    status: "OK"
+        '400':
+          description: Invalid request
 components:
   schemas:
     AuthSpecificResponse:
@@ -289,5 +349,63 @@ components:
         - Message
         - ErrorCode
         - status
-
+    ConnectionsByClientResponse:
+      type: object
+      properties:
+        CodigoPessoa:
+          type: integer
+          example: 12345
+        Conexoes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Connection'
+        Nome:
+          type: string
+          example: John Doe
+        status:
+          type: string
+          example: OK
+    Connection:
+      type: object
+      properties:
+        bloqueada:
+          type: string
+          example: "Não"
+        cadastro:
+          type: string
+          format: date
+          example: "2023-05-25"
+        cep:
+          type: string
+          example: "12345000"
+        codconexao:
+          type: integer
+          example: 54321
+        contrato:
+          type: integer
+          example: 67890
+        endereco:
+          type: string
+          example: "1234 Elm Street, Apt 567 - Springfield"
+        esta_reduzida:
+          type: string
+          example: "Não"
+        latitude:
+          type: string
+          nullable: true
+          example: ""
+        longitude:
+          type: string
+          nullable: true
+          example: ""
+        mac_address:
+          type: string
+          example: "00:1A:2B:3C:4D:5E"
+        motivo_bloqueio:
+          type: string
+          nullable: true
+          example: null
+        username:
+          type: string
+          example: "johndoe123"
          

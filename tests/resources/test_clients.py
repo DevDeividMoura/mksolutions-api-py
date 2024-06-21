@@ -19,6 +19,17 @@ def test_get_by_doc():
     assert clients[1].name == "JOÃO SILVA 2"
     assert clients[2].name == "JOÃO SILVA 3"
 
+def test_get_by_doc_with_connections():
+    mks = MKSolutions(
+        base_url=BASE_URL,
+        api_key="TEST_API_KEY",
+    )
+
+    clients = mks.clients.get_by_doc("12345678901", include_conn=True)
+
+    assert len(clients) == 3
+    assert len(clients[0].connections) == 2
+
 def test_get_by_doc_with_invalid_token():
     mks = MKSolutions(
         base_url=BASE_URL,
@@ -46,7 +57,7 @@ def test_get_by_doc_not_found():
         custom_headers={"prefer": "example=document_not_found"}
     )
 
-    with pytest.raises(DocumentNotFoundError):
+    with pytest.raises(ResultNotFoundError):
         mks.clients.get_by_doc("12345678901")
 
 def test_get_by_doc_with_expired_token():
