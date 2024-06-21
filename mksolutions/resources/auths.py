@@ -7,7 +7,7 @@ class Auths(SyncAPIResource):
         Authenticate the client using the provided general service credentials.
         """
         response = self._get(
-            "/WSAutenticacao.rule",
+            "/mk/WSAutenticacao.rule",
             options={
                 "sys": "MK0",
                 "token": self._client.token,
@@ -23,7 +23,7 @@ class Auths(SyncAPIResource):
         Authenticate the client using the provided specific service credentials.
         """
         response = self._get(
-            "/WSAutenticacaoOperador.rule",
+            "/mk/WSAutenticacaoOperador.rule",
             options={
                 "sys": "MK0",
                 "username": self._client.username,

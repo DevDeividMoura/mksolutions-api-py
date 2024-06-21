@@ -1,16 +1,9 @@
 import os
-import logging
 import pytest
-from unittest.mock import patch, MagicMock
-from mksolutions._client import MKSolutions
+from mksolutions import MKSolutions
 from mksolutions._exceptions import *
 
-BASE_URL = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010/mk/")
-
-# Configuração do logger para capturar logs em um arquivo
-log_file_path = "test_logs.log"
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', handlers=[logging.FileHandler(log_file_path), logging.StreamHandler()])
-
+BASE_URL = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010/")
 
 def test_initialization_with_env_vars(monkeypatch):
     monkeypatch.setenv("MKS_BASE_URL", BASE_URL)
@@ -50,7 +43,7 @@ def test_missing_specific_auths_params():
             auth_type="specific" 
         )
 
-def test_authenticate_on_initialization_with_missing_api_key_general(caplog):
+def test_authenticate_on_initialization_with_missing_api_key_general():
     mks = MKSolutions(
         base_url=BASE_URL,
         token="test_token",
@@ -61,14 +54,13 @@ def test_authenticate_on_initialization_with_missing_api_key_general(caplog):
 
     assert mks.api_key == "test_token_general_authentication"
 
-def test_authenticate_on_initialization_with_missing_api_key_specific(caplog):
-    with caplog.at_level(logging.DEBUG):
-        mks = MKSolutions(
-            base_url=BASE_URL,
-            username="test_user",
-            password="test_password",
-            auth_type="specific"
-        )
+def test_authenticate_on_initialization_with_missing_api_key_specific():
+    mks = MKSolutions(
+        base_url=BASE_URL,
+        username="test_user",
+        password="test_password",
+        auth_type="specific"
+    )
 
     assert mks.api_key == "test_token_specific_authentication"
 

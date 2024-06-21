@@ -46,19 +46,21 @@ mks = MKSolutions(
 )
 
 # Find a client by their document (CPF/CNPJ)
-client = mks.clients.find_by_doc('12345678901')
-print(client.name)
+clients = mks.clients.find_by_doc('12345678901')
 
-# Access contracts and connections of the client
-print(f"Client {client.name} has {len(client.contracts)} contracts and {len(client.connections)} connections.")
+for client in clients:
+    print(client.name)
 
-# Iterate through and print details of each contract
-for contract in client.contracts:
-    print(f"Contract ID: {contract.id}, Status: {contract.status}")
+    # Access contracts and connections of the client
+    print(f"Client {client.name} has {len(client.contracts)} contracts and {len(client.connections)} connections.")
 
-# Iterate through and print details of each connection
-for connection in client.connections:
-    print(f"Connection ID: {connection.id}, Status: {connection.status}")
+    # Iterate through and print details of each contract
+    for contract in client.contracts:
+        print(f"Contract ID: {contract.id}, Status: {contract.status}")
+
+    # Iterate through and print details of each connection
+    for connection in client.connections:
+        print(f"Connection ID: {connection.id}, Status: {connection.status}")
 
 ```
 

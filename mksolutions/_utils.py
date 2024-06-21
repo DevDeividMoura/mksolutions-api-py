@@ -13,3 +13,15 @@ def _extract_error_message_from_html(html_text: str) -> str:
         message = p.find('b', string=lambda x: x and 'Message' in x)
         if message: return p.text.strip()
     return html_text.strip()
+
+def _format_address(address: str) -> str:
+    """
+    Formats an address by replacing ' - ' with ', '.
+
+    :param address: The address to be formatted.
+    :type address: str
+
+    :return: The formatted address.
+    :rtype: str
+    """
+    return address.replace(" - ", ", ")

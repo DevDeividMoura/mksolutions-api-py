@@ -315,7 +315,6 @@ class SyncAPIClient(BaseClient[httpx.Client]):
 
         if response.status_code == 200:
             body = response.json()
-            print(body)
             if body.get("status") == "ERRO":
                 raise self._make_status_error_from_response(response)
 

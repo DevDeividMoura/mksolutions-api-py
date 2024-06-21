@@ -1,14 +1,9 @@
 import os
-import logging
 import pytest
-from mksolutions._client import MKSolutions
+from mksolutions import MKSolutions
 from mksolutions._exceptions import *
 
-BASE_URL = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010/mk/")
-
-# Configuração do logger para capturar logs em um arquivo
-log_file_path = "test_logs.log"
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', handlers=[logging.FileHandler(log_file_path), logging.StreamHandler()])
+BASE_URL = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010/")
 
 
 def test_get_by_doc():
@@ -24,7 +19,7 @@ def test_get_by_doc():
     assert clients[1].name == "JOÃO SILVA 2"
     assert clients[2].name == "JOÃO SILVA 3"
 
-def test_get_by_doc_with_invalid_token(caplog):
+def test_get_by_doc_with_invalid_token():
     mks = MKSolutions(
         base_url=BASE_URL,
         api_key="EXPIRED_API_KEY",
@@ -32,10 +27,9 @@ def test_get_by_doc_with_invalid_token(caplog):
     )
 
     with pytest.raises(TokenInvalidError):
-        with caplog.at_level(logging.DEBUG):
-            mks.clients.get_by_doc("12345678901")
+        mks.clients.get_by_doc("12345678901")
 
-def test_get_by_doc_with_invalid_document(caplog):
+def test_get_by_doc_with_invalid_document():
     mks = MKSolutions(
         base_url=BASE_URL,
         api_key="TEST_API_KEY",
@@ -43,10 +37,9 @@ def test_get_by_doc_with_invalid_document(caplog):
     )
 
     with pytest.raises(InvalidDocumentError):
-        with caplog.at_level(logging.DEBUG):
-            mks.clients.get_by_doc("Invalid_document")
+        mks.clients.get_by_doc("Invalid_document")
 
-def test_get_by_doc_not_found(caplog):
+def test_get_by_doc_not_found():
     mks = MKSolutions(
         base_url=BASE_URL,
         api_key="TEST_API_KEY",
@@ -54,10 +47,9 @@ def test_get_by_doc_not_found(caplog):
     )
 
     with pytest.raises(DocumentNotFoundError):
-        with caplog.at_level(logging.DEBUG):
-            mks.clients.get_by_doc("12345678901")
+        mks.clients.get_by_doc("12345678901")
 
-def test_get_by_doc_with_expired_token(caplog):
+def test_get_by_doc_with_expired_token():
     mks = MKSolutions(
         base_url=BASE_URL,
         api_key="EXPIRED_API_KEY",
@@ -65,10 +57,9 @@ def test_get_by_doc_with_expired_token(caplog):
     )
 
     with pytest.raises(TokenExpiredError):
-        with caplog.at_level(logging.DEBUG):
-            mks.clients.get_by_doc("12345678901")
+        mks.clients.get_by_doc("12345678901")
 
-def test_get_by_doc_with_token_not_found(caplog):
+def test_get_by_doc_with_token_not_found():
     mks = MKSolutions(
         base_url=BASE_URL,
         api_key="EXPIRED_API_KEY",
@@ -76,5 +67,4 @@ def test_get_by_doc_with_token_not_found(caplog):
     )
 
     with pytest.raises(TokenNotFoundError):
-        with caplog.at_level(logging.DEBUG):
-            mks.clients.get_by_doc("12345678901")
+        mks.clients.get_by_doc("12345678901")

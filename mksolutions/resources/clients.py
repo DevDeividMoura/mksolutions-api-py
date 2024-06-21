@@ -2,8 +2,7 @@ import logging
 from typing import List, Optional
 
 from .._resource import SyncAPIResource
-
-from .._types import ClientByDoc
+from ..types.clients import ClientByDoc
 
 log = logging.getLogger(__name__)
 
@@ -20,7 +19,7 @@ class Clients(SyncAPIResource):
             A list of clients that match the provided document number.
         """
         response = self._get(
-            "/WSMKConsultaDoc.rule", 
+            "/mk/WSMKConsultaDoc.rule", 
             options={
                 "sys": "MK0",
                 "token": self._client.api_key,
