@@ -1,7 +1,7 @@
 from typing import Optional
 
 from .._models import BaseModel
-from .._utils import _format_address
+from .._utils._utils import _format_address
 from .connections import Connection
 
 class ClientByDocResponse(BaseModel):
@@ -17,7 +17,7 @@ class ClientByDocResponse(BaseModel):
     latitude: str
     longitude: str
     status: str
-    connections: Optional[list[Connection]] = None
+    connections: Optional[list[Connection]] = []
 
     @classmethod
     def from_dict(cls, data: dict) -> "ClientByDocResponse":

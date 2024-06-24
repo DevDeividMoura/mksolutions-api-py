@@ -74,7 +74,7 @@ def mock_client():
     client.api_key = None
     client.username = "test_username"
     client.password = "test_password"
-    client.token = "test_token"
+    client.user_token = "test_user_token"
     client.ws_password = "test_ws_password"
     client.service_id = 1
     client.auth_type = "general"

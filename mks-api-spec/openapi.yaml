@@ -118,7 +118,7 @@ paths:
                         Latitude: "-23.561520"
                         Longitude: "-46.643308"
                         Nome: "JOÃO SILVA 2"
-                        Situacao: "Active"
+                        Situacao: "Ativo"
                       - CEP: "89354321"
                         CodigoPessoa: 67890
                         Email: "cliente3@example.com"
@@ -127,8 +127,8 @@ paths:
                         Latitude: "-23.562356"
                         Longitude: "-46.642356"
                         Nome: "JOÃO SILVA 3"
-                        Situacao: "Active"
-                    Situacao: "Active"
+                        Situacao: "Inativo"
+                    Situacao: "Ativo"
                     status: "OK"
                 token_not_found:
                   value:

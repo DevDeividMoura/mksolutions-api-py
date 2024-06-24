@@ -19,6 +19,7 @@ def test_get_by_doc():
     assert clients[1].name == "JOÃO SILVA 2"
     assert clients[2].name == "JOÃO SILVA 3"
 
+
 def test_get_by_doc_with_connections():
     mks = MKSolutions(
         base_url=BASE_URL,
@@ -47,8 +48,8 @@ def test_get_by_doc_with_invalid_document():
         custom_headers={"prefer": "example=invalid_document"}
     )
 
-    with pytest.raises(InvalidDocumentError):
-        mks.clients.get_by_doc("Invalid_document")
+    with pytest.raises(InvalidFormatError):
+        mks.clients.get_by_doc("Invalid_format_document")
 
 def test_get_by_doc_not_found():
     mks = MKSolutions(

@@ -70,7 +70,7 @@ class TokenNotFoundError(APIError):
         self.error_code = "999"
 
 
-class InvalidDocumentError(APIError):
+class InvalidFormatError(APIError):
     def __init__(self, message: str, request: httpx.Request, *, body: Optional[object] = None) -> None:
         super().__init__(message, request, body=body)
         self.error_code = "002"

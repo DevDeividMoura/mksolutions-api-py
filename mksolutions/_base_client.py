@@ -18,7 +18,7 @@ from ._types import (
     Timeout,
     Response
 )
-from ._utils import _extract_error_message_from_html
+from ._utils._utils import _extract_error_message_from_html
 
 log: logging.Logger = logging.getLogger(__name__)
 

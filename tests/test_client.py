@@ -46,7 +46,7 @@ def test_missing_specific_auths_params():
 def test_authenticate_on_initialization_with_missing_api_key_general():
     mks = MKSolutions(
         base_url=BASE_URL,
-        token="test_token",
+        user_token="test_user_token",
         ws_password="test_ws_password",
         service_id=9999,
         auth_type="general"

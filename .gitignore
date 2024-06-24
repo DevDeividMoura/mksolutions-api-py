@@ -12,6 +12,11 @@ env/
 venv/
 ENV/
 
+# Logs
+*.log
+logs/
+logs
+
 # Temporary files and folders.temp
 .tmp
 .temp/

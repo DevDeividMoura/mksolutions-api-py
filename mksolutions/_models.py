@@ -12,7 +12,7 @@ from ._types import (
 )
 
 class BaseModel(pydantic.BaseModel):
-    model_config: ClassVar[ConfigDict] = ConfigDict(arbitrary_types_allowed=True)
+    model_config: ClassVar[ConfigDict] = ConfigDict(extra="allow", arbitrary_types_allowed=True)
 
     def to_dict(
         self,

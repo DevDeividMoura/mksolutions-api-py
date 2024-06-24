@@ -38,7 +38,7 @@ class MKSolutions(SyncAPIClient):
         api_key: Optional[str] = None,
         username: Optional[str] = None,
         password: Optional[str] = None,
-        token: Optional[str] = None,
+        user_token: Optional[str] = None,
         ws_password: Optional[str] = None,
         service_id: Optional[int] = 9999,
         auth_type: Optional[str] = "general",
@@ -57,7 +57,7 @@ class MKSolutions(SyncAPIClient):
         - `api_key` from `MKS_API_KEY`
         - `username` from `MKS_USERNAME`
         - `password` from `MKS_PASSWORD`
-        - `token` from `MKS_TOKEN`
+        - `user_token` from `MKS_USER_TOKEN`
         - `ws_password` from `MKS_WS_PASSWORD`
 
         :param base_url: The base URL for the API endpoints.
@@ -65,7 +65,7 @@ class MKSolutions(SyncAPIClient):
         :param api_key: The API key for authentication,
         :param username: The username for specific service authentication.
         :param password: The password for specific service authentication.
-        :param token: The token for general service authentication.
+        :param user_token: The eser token for general service authentication.
         :param ws_password: The password for general service authentication.
         :param service_id: The service ID for general service authentication.
         :param auth_type: The type of authentication to be used if the api_key is not passed.
@@ -80,7 +80,7 @@ class MKSolutions(SyncAPIClient):
         self.api_key = api_key or os.environ.get("MKS_API_KEY")
         self.username = username or os.environ.get("MKS_USERNAME")
         self.password = password or os.environ.get("MKS_PASSWORD")
-        self.token = token or os.environ.get("MKS_TOKEN")
+        self.user_token = user_token or os.environ.get("MKS_USER_TOKEN")
         self.ws_password = ws_password or os.environ.get("MKS_WS_PASSWORD")
         self.service_id = service_id or os.environ.get("MKS_SERVICE_ID")
         self.auth_type = auth_type
@@ -97,11 +97,11 @@ class MKSolutions(SyncAPIClient):
 
         if not self.api_key:
             if self.auth_type == "general":
-                if (self.token and self.ws_password and self.service_id):
+                if (self.user_token and self.ws_password and self.service_id):
                     self.api_key = self.auths.authenticate_general()
                 else:
                     raise MissingGeneralAuthParametersError(
-                        "For general authentication, token, ws_password, and service_id must be provided."
+                        "For general authentication, user_token, ws_password, and service_id must be provided."
                     )
                 
             elif self.auth_type == "specific":
@@ -146,7 +146,7 @@ class MKSolutions(SyncAPIClient):
 
             error_map = {
                 "001": TokenInvalidError,
-                "002": InvalidDocumentError,
+                "002": InvalidFormatError,
                 "003": ResultNotFoundError,
                 "999": TokenExpiredError if "expirado" in message else TokenNotFoundError
             }

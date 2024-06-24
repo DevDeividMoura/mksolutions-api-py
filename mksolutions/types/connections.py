@@ -1,5 +1,5 @@
 from .._models import BaseModel
-from .._utils import _format_address
+from .._utils._utils import _format_address
 
 class Connection(BaseModel):
     """
@@ -35,7 +35,7 @@ class Connection(BaseModel):
             username=data["username"],
         )
 
-class ConnectionsByClientResponse(BaseModel):
+class ConnectionsByClientIDResponse(BaseModel):
     """
     A response for connections by client returned from the MKSolutions API.
     """
@@ -45,7 +45,7 @@ class ConnectionsByClientResponse(BaseModel):
     
 
     @classmethod
-    def from_dict(cls, data: dict) -> "ConnectionsByClientResponse":
+    def from_dict(cls, data: dict) -> "ConnectionsByClientIDResponse":
         return cls(
             client_id=data["CodigoPessoa"],
             client_name=data["Nome"],

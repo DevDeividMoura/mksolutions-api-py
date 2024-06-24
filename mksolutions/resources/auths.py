@@ -10,7 +10,7 @@ class Auths(SyncAPIResource):
             "/mk/WSAutenticacao.rule",
             options={
                 "sys": "MK0",
-                "token": self._client.token,
+                "token": self._client.user_token,
                 "password": self._client.ws_password,
                 "cd_servico": self._client.service_id,
             },

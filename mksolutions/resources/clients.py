@@ -9,12 +9,13 @@ log = logging.getLogger(__name__)
 
 class Clients(SyncAPIResource):
 
-    def get_by_doc(self, doc: str, include_conn: bool = False) -> List[Optional[ClientByDocResponse]]:
+    def get_by_doc(self, doc: str, include_conn: bool = False) -> List[ClientByDocResponse]:
         """
         Get a client by document number.
 
         Arguments:
             doc: The document number to search for.
+            include_conn: Whether to include connections for each client.
 
         Returns:
             A list of clients that match the provided document number.
@@ -25,23 +26,21 @@ class Clients(SyncAPIResource):
                 "sys": "MK0",
                 "token": self._client.api_key,
                 "doc": doc
-                }
+            }
         )
 
         data = response.json()
 
-        first_client = ClientByDocResponse.from_dict(data)
-        all_clients = [first_client]
+        clients = [ClientByDocResponse.from_dict(data)]
         if "Outros" in data:
-            for other in data["Outros"]:
-                all_clients.append(ClientByDocResponse.from_dict(other))
+            clients.extend(ClientByDocResponse.from_dict(other) for other in data["Outros"])
 
         if include_conn:
-            for client in all_clients:
+            for client in clients:
                 client.connections = self.__get_connections(client.id)
 
-        return all_clients
+        return clients
     
-    def __get_connections(self, client_id: int) -> List[Optional[Connection]]:
+    def __get_connections(self, client_id: int) -> List[Connection]:
         result = self._client.connections.get_by_client_id(client_id)
         return result.connections

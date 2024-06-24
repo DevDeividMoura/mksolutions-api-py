@@ -12,3 +12,9 @@ def test_get_by_clinet_id(client):
 
     assert len(result.connections) == 2
 
+def test_get_by_client_doc(client):
+
+    result = client.connections.get_by_client_doc("123456789")
+
+    assert len(result) == 6
+
