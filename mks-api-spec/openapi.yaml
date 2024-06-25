@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: MK Solutions ERP API
-  description: MK Solutions ERP API
+  title: MK Solutions API
+  description: The MK Solutions RPC API. Please see https://mkloud.atlassian.net/wiki/spaces/MK30/pages/48699908/APIs+gerais for more details.
   version: 1.0.0
 servers:
   - url: http://127.0.0.1:4010
@@ -10,12 +10,7 @@ paths:
     get:
       summary: Specific Authentication
       parameters:
-        - name: sys
-          in: query
-          required: true
-          schema:
-            type: string
-            example: MK0
+        - $ref: '#/components/parameters/sys'
         - name: username
           in: query
           required: true
@@ -35,21 +30,16 @@ paths:
                 $ref: '#/components/schemas/AuthSpecificResponse'
         '400':
           description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /mk/WSAutenticacao.rule:
     get:
       summary: General Authentication
       parameters:
-        - name: sys
-          in: query
-          required: true
-          schema:
-            type: string
-            example: MK0
-        - name: token
-          in: query
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/sys'
+        - $ref: '#/components/parameters/token'
         - name: password
           in: query
           required: true
@@ -69,21 +59,16 @@ paths:
                 $ref: '#/components/schemas/AuthGeneralResponse'
         '400':
           description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /mk/WSMKConsultaDoc.rule:
     get:
       summary: Document Consultation
       parameters:
-        - name: sys
-          in: query
-          required: true
-          schema:
-            type: string
-            example: MK0
-        - name: token
-          in: query
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/sys'
+        - $ref: '#/components/parameters/token'
         - name: doc
           in: query
           required: true
@@ -160,21 +145,16 @@ paths:
                 
         '400':
           description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /mk/WSMKConexoesPorCliente.rule:
     get:
       summary: Get connections by customer
       parameters:
-        - name: sys
-          in: query
-          required: true
-          schema:
-            type: string
-          example: MK0
-        - name: token
-          in: query
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/sys'
+        - $ref: '#/components/parameters/token'
         - name: cd_cliente
           in: query
           required: true
@@ -220,7 +200,25 @@ paths:
                     status: "OK"
         '400':
           description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
+  parameters:
+    sys:
+      name: sys
+      in: query
+      required: true
+      schema:
+        type: string
+        example: MK0
+    token:
+      name: token
+      in: query
+      required: true
+      schema:
+        type: string
   schemas:
     AuthSpecificResponse:
       type: object
@@ -339,7 +337,7 @@ components:
         Message:
           type: string
           example: "Token not found."
-        "Num. ERRO":
+        Num_ERRO:
           type: string
           example: "999"
         status:
@@ -347,7 +345,7 @@ components:
           example: "ERRO"
       required:
         - Message
-        - ErrorCode
+        - Num_ERRO
         - status
     ConnectionsByClientResponse:
       type: object
@@ -408,4 +406,15 @@ components:
         username:
           type: string
           example: "johndoe123"
-         
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Invalid request."
+        status:
+          type: string
+          example: "ERROR"
+      required:
+        - message
+        - status

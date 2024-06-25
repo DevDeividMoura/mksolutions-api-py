@@ -1,9 +1,16 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+build/
+dist/
+wheels/
+*.egg-info
 
 # Unit test / coverage reports
 .pytest_cache/
+
+# ruff lint
+.ruff_cache
 
 # Environments
 .env

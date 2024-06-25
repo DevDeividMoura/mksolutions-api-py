@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+echo "==> Running lints"
+rye run ruff check . --fix
+
+echo "==> Making sure it imports"
+rye run python -c 'import mksolutions'

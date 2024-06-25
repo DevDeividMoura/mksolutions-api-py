@@ -32,26 +32,22 @@ from mksolutions import MKSolutions
 mks = MKSolutions(
     # This is the default and can be omitted
     # Required
-    base_url=os.environ.get("MKS_BASE_URL"), 
-
+    base_url=os.environ.get("MKS_BASE_URL"),
     # For authenticated calls
-    api_key=os.environ.get("MKS_API_KEY"), 
-
+    api_key=os.environ.get("MKS_API_KEY"),
     # For specific authorizations
     username=os.environ.get("MKS_USERNAME"),
     password=os.environ.get("MKS_PASSWORD"),
-
     # For general authorizations
     user_token=os.environ.get("MKS_USER_TOKEN"),
     ws_password=os.environ.get("MKS_WS_PASSWORD"),
     service_id=os.environ.get("MKS_SERVICE_ID"),
-
     # Default authentication type
-    auth_type="gerenal"
+    auth_type="gerenal",
 )
 
 # Find clients by their document (CPF/CNPJ)
-clients = mks.clients.find_by_doc('12345678901')
+clients = mks.clients.find_by_doc("12345678901")
 
 for client in clients:
     print(client.name)
@@ -77,28 +73,26 @@ from mksolutions import AsyncMKSolutions
 mks = AsyncMKSolutions(
     # This is the default and can be omitted
     # Required
-    base_url=os.environ.get("MKS_BASE_URL"), 
-
+    base_url=os.environ.get("MKS_BASE_URL"),
     # For authenticated calls
-    api_key=os.environ.get("MKS_API_KEY"), 
-
+    api_key=os.environ.get("MKS_API_KEY"),
     # For specific authorizations
     username=os.environ.get("MKS_USERNAME"),
     password=os.environ.get("MKS_PASSWORD"),
-
     # For general authorizations
     user_token=os.environ.get("MKS_USER_TOKEN"),
     ws_password=os.environ.get("MKS_WS_PASSWORD"),
     service_id=os.environ.get("MKS_SERVICE_ID"),
-
     # Default authentication type
-    auth_type="gerenal"
+    auth_type="gerenal",
 )
+
 
 async def main():
     # Find a client by their document (CPF/CNPJ)
-    clients = await mks.clients.find_by_doc('12345678901')
+    clients = await mks.clients.find_by_doc("12345678901")
     print(clients[0].name)
+
 
 # Run the main coroutine
 asyncio.run(main())
@@ -131,14 +125,18 @@ from mksolutions import MKSolutions
 mks = MKSolutions()
 
 try:
-    clients = mks.clients.find_by_doc('12345678901')
+    clients = mks.clients.find_by_doc("12345678901")
 except mksolutions.APIConnectionError as e:
     print("The server could not be reached")
     print(e.__cause__)  # an underlying Exception, likely raised within httpx.
 except mksolutions.ResultNotFoundError as e:
-    print('I received a status code 200 with body["status"]= Error and body["ERRO NUM"] = 003. Indicates that there are no results for the search')
+    print(
+        'I received a status code 200 with body["status"]= Error and body["ERRO NUM"] = 003. Indicates that there are no results for the search'
+    )
 except mksolutions.InvalidDocumentError as e:
-    print('I received a status code 200 with body["status"]= Error and body["ERROR NUM"] = 002. Indicates that the parameter was not validated')
+    print(
+        'I received a status code 200 with body["status"]= Error and body["ERROR NUM"] = 002. Indicates that the parameter was not validated'
+    )
     print(e.status_code)
     print(e.response)
 ```
