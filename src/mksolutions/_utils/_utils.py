@@ -1,11 +1,5 @@
 from __future__ import annotations
 
-from bs4 import BeautifulSoup
-
-import os
-import re
-import inspect
-import functools
 from typing import (
     Any,
     Tuple,
@@ -14,13 +8,10 @@ from typing import (
     Callable,
     Iterable,
     Sequence,
-    cast,
-    overload,
 )
-from pathlib import Path
 from typing_extensions import TypeGuard
 
-import sniffio
+from bs4 import BeautifulSoup
 
 from .._types import NotGiven, NotGivenOr
 

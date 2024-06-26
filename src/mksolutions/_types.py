@@ -1,12 +1,7 @@
-from httpx import Timeout, Response
+from typing import Union, Mapping, TypeVar, Any
+from typing_extensions import Literal, TypedDict
 
-from typing import (
-    Union,
-    Mapping,
-    TypeVar
-)
-
-from typing_extensions import TypedDict, Literal
+from httpx import Timeout, Response as Response
 
 _T = TypeVar("_T")
 
@@ -14,10 +9,7 @@ Headers = Mapping[str, str]
 Query = Mapping[str, object]
 Body = object
 
-class RequestOptions(TypedDict, total=False):
-    params: Query
-    headers: Headers
-    timeout: Union[float, Timeout, None]
+RequestParams = dict[str, Any]
 
 # Sentinel class used until PEP 0661 is accepted
 class NotGiven:

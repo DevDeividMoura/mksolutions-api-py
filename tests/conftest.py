@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-
 import os
 import logging
 from typing import Iterator
@@ -15,6 +14,7 @@ logging.getLogger("mksolutions").setLevel(logging.DEBUG)
 
 BASE_URL = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010/")
 API_KEY = "test_api_key"
+
 
 @pytest.fixture(scope="session")
 def client() -> Iterator[MKSolutions]:

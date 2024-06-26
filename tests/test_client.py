@@ -9,10 +9,10 @@ from respx import MockRouter
 from mksolutions import MKSolutions
 from mksolutions._models import FinalRequestOptions
 from mksolutions._exceptions import (
-    MissingBaseUrlError, 
-    InvalidAuthTypeError, 
-    MissingGeneralAuthParametersError, 
-    MissingSpecificAuthParametersError
+    MissingBaseUrlError,
+    InvalidAuthTypeError,
+    MissingGeneralAuthParametersError,
+    MissingSpecificAuthParametersError,
 )
 from mksolutions._base_client import DEFAULT_TIMEOUT, HTTPX_DEFAULT_TIMEOUT
 
@@ -104,9 +104,8 @@ class TestMKSolutions:
     def test_base_url_trailing_slash(self, client: MKSolutions) -> None:
         request = client._build_request(
             FinalRequestOptions(
-                method="post",
+                method="get",
                 url="/success",
-                json_data={"success": "true"},
             ),
         )
         assert request.url == "http://localhost:5000/custom/path/success"
@@ -126,9 +125,8 @@ class TestMKSolutions:
     def test_base_url_no_trailing_slash(self, client: MKSolutions) -> None:
         request = client._build_request(
             FinalRequestOptions(
-                method="post",
+                method="get",
                 url="/success",
-                json_data={"success": "true"},
             ),
         )
         assert request.url == "http://localhost:5000/custom/path/success"
@@ -148,9 +146,8 @@ class TestMKSolutions:
     def test_absolute_request_url(self, client: MKSolutions) -> None:
         request = client._build_request(
             FinalRequestOptions(
-                method="post",
+                method="get",
                 url="https://myapi.com/success",
-                json_data={"success": "true"},
             ),
         )
         assert request.url == "https://myapi.com/success"

@@ -2,7 +2,7 @@
 # MK Solutions Python API Library
 [![PyPI version](https://img.shields.io/pypi/v/openai.svg)](https://pypi.org/project/openai/)
 
-The MK Solutions Python library provides convenient access to the MK Solutions RPC API from any Python 3.10+
+The MK Solutions Python library provides convenient access to the MK Solutions RPC API from any Python 3.8+
 application. The library includes type definitions for all request parameters and response fields,
 and offers synchronous and asynchronous clients powered by [httpx](https://github.com/encode/httpx).
 
@@ -42,15 +42,18 @@ mks = MKSolutions(
     user_token=os.environ.get("MKS_USER_TOKEN"),
     ws_password=os.environ.get("MKS_WS_PASSWORD"),
     service_id=os.environ.get("MKS_SERVICE_ID"),
-    # Default authentication type
+    # Defines the type of authentication used,
+    # whether general or specific
     auth_type="gerenal",
 )
 
 # Find clients by their document (CPF/CNPJ)
-clients = mks.clients.find_by_doc("12345678901")
+result = mks.clients.find_by_doc("12345678901")
 
-for client in clients:
-    print(client.name)
+print(f"Client ID: {result.id}, Client Name: {result.name}")
+
+for client in result.others:
+    print(f"Client ID: {client.id}, Client Name: {client.name}")
 ```
 While you can provide the keyword arguments `base_url`, `api_key`, `username`, `password`, `user_token` and `ws_password`  directly, we recommend using [python-dotenv](https://pypi.org/project/python-dotenv/). This allows you to add variables like `MKS_BASE_URL="My base url"`, `MKS_API_KEY="My API key"`, `MKS_USERNAME="My username"`, `MKS_PASSWORD="My password"`, `MKS_USER_TOKEN="My User token"` and `MKS_WS_PASSWORD="My Web Services password"` to your `.env` file, ensuring that sensitive information is not stored in source control.
 
@@ -83,15 +86,20 @@ mks = AsyncMKSolutions(
     user_token=os.environ.get("MKS_USER_TOKEN"),
     ws_password=os.environ.get("MKS_WS_PASSWORD"),
     service_id=os.environ.get("MKS_SERVICE_ID"),
-    # Default authentication type
+    # Defines the type of authentication used,
+    # whether general or specific
     auth_type="gerenal",
 )
 
 
 async def main():
-    # Find a client by their document (CPF/CNPJ)
-    clients = await mks.clients.find_by_doc("12345678901")
-    print(clients[0].name)
+    # Find clients by their document (CPF/CNPJ)
+    result = await mks.clients.find_by_doc("12345678901")
+
+    print(f"Client ID: {result.id}, Client Name: {result.name}")
+
+    for client in result.others:
+        print(f"Client ID: {client.id}, Client Name: {client.name}")
 
 
 # Run the main coroutine
@@ -131,11 +139,11 @@ except mksolutions.APIConnectionError as e:
     print(e.__cause__)  # an underlying Exception, likely raised within httpx.
 except mksolutions.ResultNotFoundError as e:
     print(
-        'I received a status code 200 with body["status"]= Error and body["ERRO NUM"] = 003. Indicates that there are no results for the search'
+        'I received a status code 200 with body["status"]= Error and body["Num. ERRO"] = 003. Indicates that there are no results for the search'
     )
 except mksolutions.InvalidDocumentError as e:
     print(
-        'I received a status code 200 with body["status"]= Error and body["ERROR NUM"] = 002. Indicates that the parameter was not validated'
+        'I received a status code 200 with body["status"]= Error and body["Num. ERRO"] = 002. Indicates that the parameter was not validated'
     )
     print(e.status_code)
     print(e.response)
@@ -147,7 +155,7 @@ Error codes are as followed:
 | >=500       | N/A       | `InternalServerError`      |
 | N/A         | N/A       | `APIConnectionError`       |
 | 200         | 001       | `TokenInvalidError`        |
-| 200         | 002       | `InvalidDocumentError`     |
+| 200         | 002       | `InvalidFormatError`       |
 | 200         | 003       | `ResultNotFoundError`      |
 | 200         | 999       | `TokenExpiredError`        |
 | 200         | 999       | `TokenNotFoundError`       |
@@ -187,7 +195,7 @@ mks = MKSolutions()
 
 response = mks.get(
     "/mk/FazerAlgumaCoisa.rule?",
-    options={
+    params={
         "sys":"MK0",
         "token": mks.api_key,
         "param": True
@@ -210,4 +218,4 @@ We are keen for your feedback; please open an [issue](https://github.com/DevDeiv
 
 ## Requirements
 
-Python 3.7 or higher.
+Python 3.8 or higher.

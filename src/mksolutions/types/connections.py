@@ -1,5 +1,4 @@
 from .._models import Field, BaseModel
-from .._utils._utils import _format_address
 
 
 class ConnectionByClientID(BaseModel):
@@ -17,7 +16,7 @@ class ConnectionByClientID(BaseModel):
     latitude: str = Field(..., alias="latitude")
     longitude: str = Field(..., alias="longitude")
     mac_address: str = Field(..., alias="mac_address")
-    block_reason: str = Field(..., alias="motivo_bloqueio")
+    block_reason: str | None = Field(..., alias="motivo_bloqueio")
     username: str = Field(..., alias="username")
 
 class ConnectionsByClientIDResponse(BaseModel):

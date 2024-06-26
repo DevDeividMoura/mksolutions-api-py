@@ -1,11 +1,12 @@
 import logging
+
 from .._resource import SyncAPIResource
-from ..types.clients import ClientByDocResponse
+from ..types.clients import ClientByDoc, ClientByDocResponse
 
 log = logging.getLogger(__name__)
 
 class Clients(SyncAPIResource):
-    def find_by_doc(self, doc: str) -> ClientByDocResponse:
+    def find_by_doc(self, doc: str, output: str = "nested") -> ClientByDocResponse | list[ClientByDoc]:
         """
         Find a client by document number.
 
@@ -17,7 +18,7 @@ class Clients(SyncAPIResource):
         """
         response = self._get(
             "/mk/WSMKConsultaDoc.rule",
-            options={
+            params={
                 "sys": "MK0", 
                 "token": self._client.api_key, 
                 "doc": doc
@@ -26,4 +27,10 @@ class Clients(SyncAPIResource):
 
         data = response.json()
 
-        return ClientByDocResponse(**data)
+
+        if output == "list":
+            clients = [ClientByDoc(**{k: v for k, v in data.items() if k not in ["Outros", "status"]})]
+            clients.extend([ClientByDoc(**item) for item in data.get("Outros", [])])
+            return clients
+        else:
+            return ClientByDocResponse(**data)

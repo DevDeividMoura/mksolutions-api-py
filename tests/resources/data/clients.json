@@ -1,0 +1,35 @@
+[
+    {
+        "CodigoPessoa": 12345,
+        "Nome": "JOÃO SILVA",
+        "Email": "cliente1@example.com",
+        "Fone": "11999999999",
+        "Endereco": "EXAMPLE STREET, 123 - Example Neighborhood, Example City",
+        "CEP": "12345678",
+        "Latitude": "-23.550520",
+        "Longitude": "-46.633308",
+        "Situacao": "Ativo"
+    },
+    {
+        "CodigoPessoa": 54321,
+        "Nome": "JOÃO SILVA 2",
+        "Email": "cliente2@example.com",
+        "Fone": "11888888888",
+        "Endereco": "EXAMPLE AVENUE, 456 - Example Neighborhood, Example City",
+        "CEP": "87654321",
+        "Latitude": "-23.561520",
+        "Longitude": "-46.643308",
+        "Situacao": "Ativo"
+    },
+    {
+        "CodigoPessoa": 67890,
+        "Nome": "JOÃO SILVA 3",
+        "Email": "cliente3@example.com",
+        "Fone": "47999999999",
+        "Endereco": "EXAMPLE LANE, 789 - Example Neighborhood, Example City",
+        "CEP": "89354321",
+        "Latitude": "-23.562356",
+        "Longitude": "-46.642356",
+        "Situacao": "Inativo"
+    }
+]

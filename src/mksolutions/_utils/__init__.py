@@ -10,6 +10,6 @@ from ._utils import (
     is_sequence as is_sequence,
     is_mapping_t as is_mapping_t,
     is_sequence_t as is_sequence_t,
-    _extract_error_message_from_html as _extract_error_message_from_html,
     _format_address as _format_address,
+    _extract_error_message_from_html as _extract_error_message_from_html,
 )

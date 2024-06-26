@@ -1,6 +1,6 @@
 from typing_extensions import TypedDict
 
-__all__ = ["ClientGetByDocParams"]
+__all__ = ["ClientFindByDocParams"]
 
 
 class ClientFindByDocParams(TypedDict):

@@ -1,16 +1,15 @@
 from typing import Union, Optional
-from typing_extensions import final, ClassVar, Literal
+from typing_extensions import Literal, ClassVar, final
 
 import pydantic
-from pydantic import Field as Field
-from pydantic import ConfigDict
+from pydantic import Field as Field, ConfigDict
 
 from ._types import (
-    Body,
     Query,
     Headers,
     Timeout,
 )
+
 
 class BaseModel(pydantic.BaseModel):
     model_config: ClassVar[ConfigDict] = ConfigDict(extra="allow", arbitrary_types_allowed=True)
@@ -92,6 +91,6 @@ class BaseModel(pydantic.BaseModel):
 class FinalRequestOptions(BaseModel):
     method: str
     url: str
-    params: Optional[Query] = {}
+    params: Optional[Query] = None
     headers: Optional[Headers] = None
     timeout: Union[float, Timeout, None] = None

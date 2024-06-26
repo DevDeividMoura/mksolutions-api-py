@@ -1,5 +1,5 @@
 import os
-from typing import Optional, Union
+from typing import Union, Optional
 from typing_extensions import override
 
 import httpx
@@ -12,7 +12,6 @@ from ._types import (
 )
 from .__version__ import __version__
 from ._exceptions import *
-from ._constants import DEFAULT_TIMEOUT
 from ._base_client import SyncAPIClient
 
 
@@ -121,9 +120,6 @@ class MKSolutions(SyncAPIClient):
         self.clients = resources.Clients(self)
         self.contracts = resources.Contracts(self)
         self.connections = resources.Connections(self)
-
-        if not self.api_key:
-            self.auths.authenticate()
 
     @override
     def _make_status_error(

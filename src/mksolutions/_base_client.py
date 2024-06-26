@@ -1,19 +1,13 @@
 import json
 import logging
 from types import TracebackType
-from typing import TYPE_CHECKING, Dict, Union, Generic, TypeVar, Optional
+from typing import TYPE_CHECKING, Dict, Union, Generic, TypeVar, Optional, Mapping, Any, cast
 
 import httpx
 from httpx import URL
 
-
-from ._types import(
-    NOT_GIVEN,
-    Timeout,
-    NotGiven, 
-    Response, 
-    RequestOptions
-)
+from ._qs import Querystring
+from ._types import NOT_GIVEN, Timeout, NotGiven, Response, RequestParams
 from ._models import FinalRequestOptions
 from ._constants import DEFAULT_TIMEOUT
 from ._exceptions import (
@@ -161,10 +155,14 @@ class BaseClient(Generic[_HttpxClientT]):
         return self._client.build_request(
             method=options.method,
             url=self._prepare_url(options.url),
-            params=options.params,
+            params=self.qs.stringify(cast(Mapping[str, Any], options.params)) if options.params else None,
             headers=headers,
             timeout=self.timeout if options.timeout is None else options.timeout,
         )
+    
+    @property
+    def qs(self) -> Querystring:
+        return Querystring()
 
     @property
     def base_url(self) -> URL:
@@ -344,6 +342,11 @@ class SyncAPIClient(BaseClient[httpx.Client]):
             body = response.json()
             if body.get("status") == "ERRO":
                 raise self._make_status_error_from_response(response)
+            
+        log.debug(
+            'HTTP Response body: %s',
+            response.json(),
+        )
 
         return response
 
@@ -351,7 +354,7 @@ class SyncAPIClient(BaseClient[httpx.Client]):
         self,
         path: str,
         *,
-        options: RequestOptions = {},
+        params: RequestParams = {},
     ) -> Response:
         """
         Send a GET request to the specified URL.
@@ -361,6 +364,6 @@ class SyncAPIClient(BaseClient[httpx.Client]):
         :param headers: (optional) The headers to send with the request.
         :return: The response object of the GET request.
         """
-        log.debug("GET options: %s", options)
-        opts = FinalRequestOptions(method="GET", url=path, params=options)
+        log.debug("GET params: %s", params)
+        opts = FinalRequestOptions(method="GET", url=path, params=params)
         return self.request(opts)

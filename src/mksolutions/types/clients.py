@@ -1,6 +1,8 @@
-from typing import Optional, List
+from typing import List, Optional
+
 from .._models import Field, BaseModel
 from .._utils._utils import _format_address  # Import utilizado para formatação de endereços, se necessário
+
 
 class ClientByDoc(BaseModel):
     """
@@ -29,7 +31,7 @@ class ClientByDocResponse(BaseModel):
     latitude: str = Field(..., alias="Latitude")
     longitude: str = Field(..., alias="Longitude")
     status: str = Field(..., alias="Situacao")
-    other: Optional[List[ClientByDoc]] = Field(None, alias="Outros")
+    others: List[Optional[ClientByDoc]] = Field(None, alias="Outros")
 
     def __init__(self, **data):
         super().__init__(**data)

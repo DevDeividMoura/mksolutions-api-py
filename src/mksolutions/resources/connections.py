@@ -1,5 +1,5 @@
 import logging
-from typing import List, Optional
+from typing import List
 
 from .._resource import SyncAPIResource
 from ..types.clients import ClientByDoc
@@ -40,10 +40,10 @@ class Connections(SyncAPIResource):
         Returns:
             A list of connections that match the provided document number.
         """
-        clients_response = self._client.clients.get_by_doc(client_doc)
+        clients_response = self._client.clients.find_by_doc(client_doc)
         main_client = {k: v for k, v in clients_response.to_dict().items() if k not in ["Outros", "status"]}
         clients = [ClientByDoc(**main_client)]
-        clients.extend(client for client in clients_response.other)
+        clients.extend(client for client in clients_response.others)
 
         connections = []
 
