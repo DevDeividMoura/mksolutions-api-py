@@ -1,0 +1,420 @@
+openapi: 3.1.0
+info:
+  title: MK Solutions ERP API
+  description: MK Solutions ERP API
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:4010
+paths:
+  /mk/WSAutenticacaoOperador.rule:
+    get:
+      summary: Specific Authentication
+      parameters:
+        - $ref: '#/components/parameters/sys'
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSpecificResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /mk/WSAutenticacao.rule:
+    get:
+      summary: General Authentication
+      parameters:
+        - $ref: '#/components/parameters/sys'
+        - $ref: '#/components/parameters/token'
+        - name: password
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: cd_servico
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthGeneralResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /mk/WSMKConsultaDoc.rule:
+    get:
+      summary: Document Consultation
+      parameters:
+        - $ref: '#/components/parameters/sys'
+        - $ref: '#/components/parameters/token'
+        - name: doc
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/DocumentConsultationResponse'
+                  - $ref: '#/components/schemas/ProcessedWithErrorResponse'
+              examples:
+                success:
+                  value:
+                    CEP: "12345678"
+                    CodigoPessoa: 12345
+                    Email: "cliente1@example.com"
+                    Endereco: "EXAMPLE STREET, 123 - Example Neighborhood, Example City"
+                    Fone: "11999999999"
+                    Latitude: "-23.550520"
+                    Longitude: "-46.633308"
+                    Nome: "JOÃO SILVA"
+                    Outros: 
+                      - CEP: "87654321"
+                        CodigoPessoa: 54321
+                        Email: "cliente2@example.com"
+                        Endereco: "EXAMPLE AVENUE, 456 - Example Neighborhood, Example City"
+                        Fone: "11888888888"
+                        Latitude: "-23.561520"
+                        Longitude: "-46.643308"
+                        Nome: "JOÃO SILVA 2"
+                        Situacao: "Ativo"
+                      - CEP: "89354321"
+                        CodigoPessoa: 67890
+                        Email: "cliente3@example.com"
+                        Endereco: "EXAMPLE LANE, 789 - Example Neighborhood, Example City"
+                        Fone: "47999999999"
+                        Latitude: "-23.562356"
+                        Longitude: "-46.642356"
+                        Nome: "JOÃO SILVA 3"
+                        Situacao: "Inativo"
+                    Situacao: "Ativo"
+                    status: "OK"
+                token_not_found:
+                  value:
+                    CodToken: 0
+                    Mensagem: "Token not found."
+                    "Num. ERRO": "999"
+                    status: "ERRO"
+                expired_token:
+                  value:
+                    CodToken: 585185
+                    Mensagem: "Token expirado."
+                    "Num. ERRO": "999"
+                    status: "ERRO"
+                invalid_token:
+                  value:
+                    Mensagem: "Token inválido."
+                    "Num. ERRO": "001"
+                    status: "ERRO"
+                invalid_document:
+                  value:
+                    Mensagem: "Documento inválido."
+                    "Num. ERRO": "002"
+                    status: "ERRO"
+                document_not_found:
+                  value:
+                    Mensagem: "Documento não localizado."
+                    "Num. ERRO": "003"
+                    status: "ERRO"
+                
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /mk/WSMKConexoesPorCliente.rule:
+    get:
+      summary: Get connections by customer
+      parameters:
+        - $ref: '#/components/parameters/sys'
+        - $ref: '#/components/parameters/token'
+        - name: cd_cliente
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Client connection list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectionsByClientResponse'
+              examples:
+                success:
+                  value:
+                    CodigoPessoa: 12345
+                    Conexoes:
+                      - bloqueada: "Não"
+                        cadastro: "2023-05-25"
+                        cep: "12345000"
+                        codconexao: 54321
+                        contrato: 67890
+                        endereco: "1234 Elm Street, Apt 567 - Springfield"
+                        esta_reduzida: "Não"
+                        latitude: ""
+                        longitude: ""
+                        mac_address: "00:1A:2B:3C:4D:5E"
+                        motivo_bloqueio: null
+                        username: "johndoe123"
+                      - bloqueada: "Não"
+                        cadastro: "2022-11-15"
+                        cep: "67890000"
+                        codconexao: 98765
+                        contrato: 43210
+                        endereco: "4321 Oak Street, Apt 321 - Shelbyville"
+                        esta_reduzida: "Sim"
+                        latitude: ""
+                        longitude: ""
+                        mac_address: "11:22:33:44:55:66"
+                        motivo_bloqueio: null
+                        username: "janedoe456"
+                    Nome: "John Doe"
+                    status: "OK"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  parameters:
+    sys:
+      name: sys
+      in: query
+      required: true
+      schema:
+        type: string
+        example: MK0
+    token:
+      name: token
+      in: query
+      required: true
+      schema:
+        type: string
+  schemas:
+    AuthSpecificResponse:
+      type: object
+      properties:
+        Adm:
+          type: string
+          example: Yes
+        Email:
+          type: string
+          example: teste@dmsolucoesemti.com.br
+        Fone:
+          type: string
+          example: "999999999"
+        Operador:
+          type: string
+          example: DM Support
+        TokenAutenticacao:
+          type: string
+          example: test_token_specific_authentication
+        status:
+          type: string
+          example: OK
+    AuthGeneralResponse:
+      type: object
+      properties:
+        Expire:
+          type: string
+          example: 30/10/2020 17:50:56
+        UsageLimit:
+          type: integer
+          example: 0
+        AuthorizedServices:
+          type: array
+          items:
+            type: integer
+          example: [1]
+        Token:
+          type: string
+          example: test_token_general_authentication
+        status:
+          type: string
+          example: OK
+    Client:
+      type: object
+      properties:
+        CEP:
+          type: string
+          example: "12345678"
+        PersonCode:
+          type: integer
+          example: 12345
+        Email:
+          type: string
+          example: "cliente@example.com"
+        Address:
+          type: string
+          example: "EXAMPLE STREET, 123 - Example Neighborhood, Example City"
+        Phone:
+          type: string
+          example: "11999999999"
+        Latitude:
+          type: string
+          example: "-23.550520"
+        Longitude:
+          type: string
+          example: "-46.633308"
+        Name:
+          type: string
+          example: "JOÃO SILVA"
+        Status:
+          type: string
+          example: "Active"
+    DocumentConsultationResponse:
+      type: object
+      properties:
+        CEP:
+          type: string
+          example: "12345678"
+        PersonCode:
+          type: integer
+          example: 12345
+        Email:
+          type: string
+          example: "cliente@example.com"
+        Address:
+          type: string
+          example: "EXAMPLE STREET, 123 - Example Neighborhood, Example City"
+        Phone:
+          type: string
+          example: "11999999999"
+        Latitude:
+          type: string
+          example: "-23.550520"
+        Longitude:
+          type: string
+          example: "-46.633308"
+        Name:
+          type: string
+          example: "JOÃO SILVA"
+        Others:
+          type: array
+          items:
+            $ref: '#/components/schemas/Client'
+        Status:
+          type: string
+          example: "Active"
+        status:
+          type: string
+          example: "OK"
+    ProcessedWithErrorResponse:
+      type: object
+      properties:
+        CodToken:
+          type: integer
+          example: 0
+        Message:
+          type: string
+          example: "Token not found."
+        Num_ERRO:
+          type: string
+          example: "999"
+        status:
+          type: string
+          example: "ERRO"
+      required:
+        - Message
+        - Num_ERRO
+        - status
+    ConnectionsByClientResponse:
+      type: object
+      properties:
+        CodigoPessoa:
+          type: integer
+          example: 12345
+        Conexoes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Connection'
+        Nome:
+          type: string
+          example: John Doe
+        status:
+          type: string
+          example: OK
+    Connection:
+      type: object
+      properties:
+        bloqueada:
+          type: string
+          example: "Não"
+        cadastro:
+          type: string
+          format: date
+          example: "2023-05-25"
+        cep:
+          type: string
+          example: "12345000"
+        codconexao:
+          type: integer
+          example: 54321
+        contrato:
+          type: integer
+          example: 67890
+        endereco:
+          type: string
+          example: "1234 Elm Street, Apt 567 - Springfield"
+        esta_reduzida:
+          type: string
+          example: "Não"
+        latitude:
+          type: string
+          nullable: true
+          example: ""
+        longitude:
+          type: string
+          nullable: true
+          example: ""
+        mac_address:
+          type: string
+          example: "00:1A:2B:3C:4D:5E"
+        motivo_bloqueio:
+          type: string
+          nullable: true
+          example: null
+        username:
+          type: string
+          example: "johndoe123"
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Invalid request."
+        status:
+          type: string
+          example: "ERROR"
+      required:
+        - message
+        - status
