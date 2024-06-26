@@ -1,7 +1,7 @@
-from typing import Union, Mapping, TypeVar, Any
-from typing_extensions import Literal, TypedDict
+from typing import Any, Union, Mapping, TypeVar
+from typing_extensions import Literal
 
-from httpx import Timeout, Response as Response
+from httpx import Timeout as Timeout, Response as Response
 
 _T = TypeVar("_T")
 

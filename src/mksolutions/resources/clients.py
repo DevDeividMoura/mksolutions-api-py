@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 import logging
 
+from ..types import ClientByDoc, ClientByDocResponse
 from .._resource import SyncAPIResource
-from ..types.clients import ClientByDoc, ClientByDocResponse
 
 log = logging.getLogger(__name__)
 

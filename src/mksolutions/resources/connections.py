@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 import logging
 from typing import List
 
+from ..types import ConnectionByClientID, ConnectionsByClientIDResponse
 from .._resource import SyncAPIResource
-from ..types.clients import ClientByDoc
-from ..types.connections import ConnectionByClientID, ConnectionsByClientIDResponse
+from ..types.clients_by_doc import ClientByDoc
 
 log = logging.getLogger(__name__)
 

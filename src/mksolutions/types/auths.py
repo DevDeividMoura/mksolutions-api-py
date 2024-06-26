@@ -1,6 +1,10 @@
+from __future__ import annotations
+
 from typing import List
 
 from .._models import Field, BaseModel
+
+__all__ = ["AuthSpecificResponse", "AuthGeneralResponse"]
 
 
 class AuthSpecificResponse(BaseModel):

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from .._resource import SyncAPIResource
 from ..types.auths import AuthGeneralResponse, AuthSpecificResponse
 

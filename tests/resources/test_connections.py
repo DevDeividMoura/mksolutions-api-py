@@ -1,6 +1,7 @@
 import os
 
 from mksolutions import MKSolutions
+from mksolutions.types import ConnectionByClientID, ConnectionsByClientIDResponse
 from mksolutions._exceptions import *
 
 BASE_URL = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010/")
@@ -12,10 +13,13 @@ class TestConnections:
     def test_find_by_clinet_id(self, client: MKSolutions):
         result = client.connections.find_by_client_id(123456)
 
+        assert isinstance(result, ConnectionsByClientIDResponse)
         assert len(result.connections) == 2
 
 
     def test_find_by_client_doc(self, client: MKSolutions):
         result = client.connections.find_by_client_doc("123456789")
 
+        assert isinstance(result, list)
+        assert isinstance(result[0], ConnectionByClientID)
         assert len(result) == 6

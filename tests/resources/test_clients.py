@@ -1,12 +1,11 @@
 import os
-import json
 import logging
 
 import pytest
 
 from mksolutions import MKSolutions
+from mksolutions.types import ClientByDoc, ClientByDocResponse
 from mksolutions._exceptions import *
-from mksolutions.types.clients import ClientByDocResponse
 
 BASE_URL = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010/")
 API_KEY = "test_api_key"
@@ -29,7 +28,10 @@ class TestClients:
 
         clients = mks.clients.find_by_doc("12345678901", output="list")
 
+        assert isinstance(clients, list)
+        assert isinstance(clients[0], ClientByDoc)
         assert len(clients) == 3
+        
 
 
     def test_find_by_doc_with_invalid_token(self):

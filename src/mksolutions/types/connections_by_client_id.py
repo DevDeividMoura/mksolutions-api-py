@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 from .._models import Field, BaseModel
 
+__all__ = ["ConnectionByClientID"]
 
 class ConnectionByClientID(BaseModel):
     """
@@ -18,12 +21,3 @@ class ConnectionByClientID(BaseModel):
     mac_address: str = Field(..., alias="mac_address")
     block_reason: str | None = Field(..., alias="motivo_bloqueio")
     username: str = Field(..., alias="username")
-
-class ConnectionsByClientIDResponse(BaseModel):
-    """
-    A response for connections by client returned from the MKSolutions API.
-    """
-
-    client_id: int = Field(..., alias="CodigoPessoa")
-    client_name: str = Field(..., alias="Nome")
-    connections: list[ConnectionByClientID] = Field(..., alias="Conexoes")

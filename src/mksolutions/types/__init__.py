@@ -1,0 +1,4 @@
+from .clients_by_doc import ClientByDoc as ClientByDoc
+from .clients_by_doc_response import ClientByDocResponse as ClientByDocResponse
+from .connections_by_client_id import ConnectionByClientID as ConnectionByClientID
+from .connections_by_client_id_response import ConnectionsByClientIDResponse as ConnectionsByClientIDResponse
