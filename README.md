@@ -10,7 +10,7 @@ This project is generated from the [OpenAPI specification](https://github.com/De
 
 ## Documentation
 
-The RPC API documentation can be found on [Atlassian Docs](https://mkloud.atlassian.net/wiki/spaces/MK30/pages/48699908/APIs+gerais). The full API of this library can be found in [api.md](api.md).
+The RPC API documentation can be found on [Atlassian Docs](https://mkloud.atlassian.net/wiki/spaces/MK30/pages/48699908/APIs+gerais). The full API of this library can be found in [api.md](api.md). In the mks-api-spec folder, you can find the OpenAPI specification of the API. This specification is being developed in parallel with this library, used to mock the API and allow real calls in tests.
 
 ### Installation
 
