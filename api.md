@@ -22,4 +22,4 @@ Methods:
 
 - <code title="get /mk/WSMKConexoesPorCliente.rule">client.connections.<a href="./src/mksolutions/resources/connections.py">find_by_client_id</a>(\*\*<a href="./src/mksolutions/types/connections_find_by_client_id_params.py">params</a>) -> <a href="./src/mksolutions/types/connections_by_client_id_response.py">ConnectionsByClientIDResponse</a> | <a href="./src/mksolutions/types/connections_by_client_id.py">List[ConnectionByClientID]</a></code>
 
-- <code title="get /mk/WSMKConsultaDoc.rule">client.connections.<a href="./src/mksolutions/resources/connections.py">find_by_client_doc</a>(client_doc) -> <a href="./src/mksolutions/types/connections_by_client_id.py">List[ConnectionByClientID]</a></code>
+- <code title="get /mk/WSMKConsultaDoc.rule and get /mk/WSMKConexoesPorCliente.rule">client.connections.<a href="./src/mksolutions/resources/connections.py">find_by_client_doc</a>(client_doc) -> <a href="./src/mksolutions/types/connections_by_client_id.py">List[ConnectionByClientID]</a></code>

@@ -17,7 +17,7 @@ class AuthSpecificResponse(BaseModel):
 
 class AuthGeneralResponse(BaseModel):
     expire: str = Field(..., alias="Expire")
-    rate_limit: int = Field(..., alias="UsageLimit")
-    auth_services: List[int] = Field(..., alias="AuthorizedServices")
+    rate_limit: int = Field(..., alias="LimiteUso")
+    auth_services: List[int] = Field(..., alias="ServicosAutorizados")
     token: str = Field(..., alias="Token")
     status: str = Field(..., alias="status")
