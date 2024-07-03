@@ -18,6 +18,9 @@ jobs:
         run: |
           curl -sSf https://rye.astral.sh/get | bash
           echo "$HOME/.rye/shims" >> $GITHUB_PATH
+        env:
+          RYE_VERSION: 0.35.0
+          RYE_INSTALL_OPTION: '--yes'
 
       - name: Build and Publish to PyPI
         run: |
