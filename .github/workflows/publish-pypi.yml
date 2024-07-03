@@ -1,0 +1,26 @@
+name: Publish PyPI
+on:
+  # push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: release
+    if: github.ref == 'refs/heads/main'  && github.repository == 'DevDeividMoura/mksolutions-api-py'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rye
+        run: |
+          curl -sSf https://rye.astral.sh/get | bash
+          echo "$HOME/.rye/shims" >> $GITHUB_PATH
+
+      - name: Build and Publish to PyPI
+        run: |
+          bash ./bin/publish-pypi
+        env:
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
