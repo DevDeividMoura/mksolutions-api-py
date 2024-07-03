@@ -247,10 +247,10 @@ components:
         Expire:
           type: string
           example: 30/10/2020 17:50:56
-        UsageLimit:
+        LimiteUso:
           type: integer
           example: 0
-        AuthorizedServices:
+        ServicosAutorizados:
           type: array
           items:
             type: integer

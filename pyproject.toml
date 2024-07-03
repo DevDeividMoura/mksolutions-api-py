@@ -1,6 +1,6 @@
 [project]
 name = "mksolutions"
-version = "0.8.0"
+version = "0.8.1"
 description = "The community Python library for the MK Solutions ERP API"
 dynamic = ["readme"]
 license = "MIT"
