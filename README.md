@@ -1,6 +1,6 @@
 
 # MK Solutions Python API Library
-[![PyPI version](https://img.shields.io/pypi/v/openai.svg)](https://pypi.org/project/openai/)
+[![PyPI version](https://img.shields.io/pypi/v/mksolutions.svg)](https://pypi.org/project/mksolutions/)
 
 The MK Solutions Python library provides convenient access to the MK Solutions RPC API from any Python 3.8+
 application. The library includes type definitions for all request parameters and response fields,
