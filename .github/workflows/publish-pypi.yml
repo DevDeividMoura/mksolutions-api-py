@@ -12,7 +12,7 @@ on:
 jobs:
   release:
     name: release
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.ref == 'refs/heads/main' && github.repository == 'DevDeividMoura/mksolutions-api-py' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.ref == 'refs/heads/main' && github.repository == 'DevDeividMoura/mksolutions-api-py' && !contains(github.event.head_commit.message, '[skip pipeline]')}}
     runs-on: ubuntu-latest
 
     steps:
